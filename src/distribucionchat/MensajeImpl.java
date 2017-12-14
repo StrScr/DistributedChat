@@ -54,9 +54,9 @@ public class MensajeImpl extends UnicastRemoteObject implements Mensaje {
                 }
             }
         }else{
-            clienteObj.get(idto).publicarACliente(idfrom + " to You: " + mensaje);
+            clienteObj.get(idto).publicarACliente(idfrom + " " + me.getUsername() + " to You: " + mensaje);
         }
-        me.publicarACliente("You to " + ((idto==0)?"Everyone":idto) + ": " + mensaje);
+        me.publicarACliente("You to " + ((idto==0)?"Everyone":clienteObj.get(idto).getUsername()) + ": " + mensaje);
     }
     
     @Override
