@@ -77,6 +77,10 @@ public class MensajeImpl extends UnicastRemoteObject implements Mensaje {
     
     @Override
     public void setClients(Map<Integer, Mensaje> n) throws RemoteException{
-        cGUI.updateClients(n);
+        String[] usernames = new String[n.values().size()];
+        for (int i = 0; i < n.values().size(); i++) {
+            usernames[i] = n.get(i + 1).getUsername();
+        }
+        cGUI.updateClients(usernames);
     }
 }
