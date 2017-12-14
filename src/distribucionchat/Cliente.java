@@ -15,6 +15,7 @@ import java.util.Scanner;
  * @author Juan Leonardo
  */
 public class Cliente {    
+    public String name;
     private Mensaje mensaje = null; 
     private ClienteGUI cGUI = null;
     private int myid;
@@ -25,14 +26,14 @@ public class Cliente {
         this.cGUI = cGUI;
     }
     
-    public void iniciar() {
+    public void iniciar(String username) {
         try {
             Registry myRegistry = LocateRegistry.getRegistry("127.0.0.1", 1099);                         
             mensaje = (Mensaje) myRegistry.lookup("miMensaje");                        
             if (this.cGUI == null){
-                myid = mensaje.registrar(new MensajeImpl());
+                myid = mensaje.registrar(new MensajeImpl(username));
             }else{
-                myid = mensaje.registrar(new MensajeImpl(this.cGUI));
+                myid = mensaje.registrar(new MensajeImpl(username, this.cGUI));
             }
             System.out.println("My id is " + myid);
         } catch (RemoteException | NotBoundException ex) {
@@ -63,7 +64,7 @@ public class Cliente {
         
     public static void main(String[] args) throws RemoteException, NotBoundException {        
         Cliente cliente = new Cliente();
-        cliente.iniciar();
+        cliente.iniciar("Default");
         cliente.prueba();
     }
     

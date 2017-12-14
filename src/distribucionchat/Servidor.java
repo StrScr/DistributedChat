@@ -25,7 +25,7 @@ public class Servidor {
             Registry registry = LocateRegistry.createRegistry(1099);
              
             // Crea un nuevo servicio y lo registra en el repositorio
-            registry.rebind("miMensaje", new MensajeImpl());
+            registry.rebind("miMensaje", new MensajeImpl("Server"));
         } catch (RemoteException e) {
         }      
         System.out.println("El sistema esta listo");

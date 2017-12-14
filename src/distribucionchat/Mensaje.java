@@ -16,4 +16,5 @@ public interface Mensaje extends Remote {
     void publicarACliente(String mensaje) throws RemoteException;
     int registrar(Mensaje mensajeObj) throws RemoteException;
     void setClients(int n) throws RemoteException;
+    String getUsername() throws RemoteException;
 }

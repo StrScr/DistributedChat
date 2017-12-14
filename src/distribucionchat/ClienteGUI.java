@@ -16,9 +16,9 @@ public class ClienteGUI extends javax.swing.JFrame {
     /**
      * Creates new form ClienteGUI
      */
-    public ClienteGUI() {
+    public ClienteGUI(String username) {
         initComponents();      
-        cliente.iniciar();  
+        cliente.iniciar(username);  
     }
 
     /**
@@ -140,7 +140,7 @@ public class ClienteGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ClienteGUI().setVisible(true);
+                new ClienteGUI("Default").setVisible(true);
             }
         });
     }

@@ -17,16 +17,24 @@ import java.util.Map;
 
 
 
-public class MensajeImpl extends UnicastRemoteObject implements Mensaje {               
+public class MensajeImpl extends UnicastRemoteObject implements Mensaje {  
+    private String username;
     private Map<Integer,Mensaje> clienteObj = null;
     private ClienteGUI cGUI = null;
     private int lastid;
+
+    public String getUsername() {
+        return username;
+    }
     
-    public MensajeImpl() throws RemoteException {
+    
+    public MensajeImpl(String username) throws RemoteException {
+        this.username = username;
         clienteObj = new HashMap<>();
         lastid = 0;
     }
-    public MensajeImpl(ClienteGUI cGUI) throws RemoteException {
+    public MensajeImpl(String username, ClienteGUI cGUI) throws RemoteException {
+        this.username = username;
         clienteObj = new HashMap<>();
         this.cGUI = cGUI;
         lastid = 0;
@@ -42,7 +50,7 @@ public class MensajeImpl extends UnicastRemoteObject implements Mensaje {
             while (cliOI.hasNext()) {
                 nxt = ((Mensaje)cliOI.next());
                 if(nxt!=me){
-                    nxt.publicarACliente(idfrom + " to Everyone: " + mensaje);
+                    nxt.publicarACliente(idfrom + " " + me.getUsername() + " to Everyone: " + mensaje);
                 }
             }
         }else{
