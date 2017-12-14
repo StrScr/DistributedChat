@@ -159,7 +159,13 @@ public class ClienteGUI extends javax.swing.JFrame {
         if (index == 0) {
             this.jTextArea1.append(mensaje + "\n");
         }else {
-            dms.get(index - 1).actualizarTexto(mensaje);
+            directMessage chat = dms.get(index - 1);
+            chat.actualizarTexto(mensaje);
+            if(!chat.isVisible()){
+                chat.pack();
+                chat.setTitle("Chat with " + userList.getSelectedValue());
+                chat.setVisible(true);
+            }
         }
     }
     
