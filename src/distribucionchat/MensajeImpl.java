@@ -50,18 +50,18 @@ public class MensajeImpl extends UnicastRemoteObject implements Mensaje {
             while (cliOI.hasNext()) {
                 nxt = ((Mensaje)cliOI.next());
                 if(nxt!=me){
-                    nxt.publicarACliente(idfrom + " " + me.getUsername() + " to Everyone: " + mensaje);
+                    nxt.publicarACliente(idfrom + " " + me.getUsername() + " to Everyone: " + mensaje, 0);
                 }
             }
         }else{
-            clienteObj.get(idto).publicarACliente(idfrom + " " + me.getUsername() + " to You: " + mensaje);
+            clienteObj.get(idto).publicarACliente(idfrom + " " + me.getUsername() + " to You: " + mensaje, idfrom);
         }
-        me.publicarACliente("You to " + ((idto==0)?"Everyone":clienteObj.get(idto).getUsername()) + ": " + mensaje);
+        me.publicarACliente("You to " + ((idto==0)?"Everyone":clienteObj.get(idto).getUsername()) + ": " + mensaje, idto);
     }
     
     @Override
-    public void publicarACliente(String mensaje) throws RemoteException {
-        cGUI.actualizarTexto(mensaje);
+    public void publicarACliente(String mensaje, int idfrom) throws RemoteException {
+        cGUI.actualizarTexto(mensaje, idfrom);
     }
     
     @Override

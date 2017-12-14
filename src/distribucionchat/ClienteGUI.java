@@ -23,6 +23,7 @@ public class ClienteGUI extends javax.swing.JFrame {
      * Creates new form ClienteGUI
      */
     public ClienteGUI(String username) {
+        dms = new ArrayList();
         initComponents();      
         cliente.iniciar(username);  
     }
@@ -40,7 +41,6 @@ public class ClienteGUI extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jSpinner1 = new javax.swing.JSpinner();
         jScrollPane2 = new javax.swing.JScrollPane();
         userList = new javax.swing.JList<>();
         chat = new javax.swing.JButton();
@@ -56,18 +56,6 @@ public class ClienteGUI extends javax.swing.JFrame {
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
-            }
-        });
-
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 0, 1));
-        jSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jSpinner1StateChanged(evt);
-            }
-        });
-        jSpinner1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jSpinner1PropertyChange(evt);
             }
         });
 
@@ -91,12 +79,10 @@ public class ClienteGUI extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
                     .addComponent(chat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)))
                 .addContainerGap())
@@ -112,7 +98,6 @@ public class ClienteGUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chat))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -122,25 +107,17 @@ public class ClienteGUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (!this.jTextField1.getText().equals("")) {
-            cliente.enviarMensaje(this.jTextField1.getText());
+            cliente.enviarMensaje(this.jTextField1.getText(), 0);
             this.jTextField1.setText("");
         }
             
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
-        cliente.selectto((Integer)this.jSpinner1.getValue());
-    }//GEN-LAST:event_jSpinner1StateChanged
-
-    private void jSpinner1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jSpinner1PropertyChange
-        cliente.selectto((Integer)this.jSpinner1.getValue());
-    }//GEN-LAST:event_jSpinner1PropertyChange
-
     private void chatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chatActionPerformed
         int index = userList.getSelectedIndex();
-////        directMessage newChat = new directMessage(index);
-//        newChat.pack();
-//        newChat.setVisible(true);
+        directMessage newChat = dms.get(index);
+        newChat.pack();
+        newChat.setVisible(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_chatActionPerformed
 
@@ -179,9 +156,13 @@ public class ClienteGUI extends javax.swing.JFrame {
         });
     }
     
-    public void actualizarTexto(String mensaje) {
+    public void actualizarTexto(String mensaje, int index) {
         //this.jTextArea1.setText(jTextArea1.getText()+"\n" + mensaje);
-        this.jTextArea1.append("\n" + mensaje);
+        if (index == 0) {
+            this.jTextArea1.append("\n" + mensaje);
+        }else {
+            dms.get(index - 1).actualizarTexto(mensaje);
+        }
     }
     
     public void updateClients(String[] clients) throws RemoteException{
@@ -190,6 +171,9 @@ public class ClienteGUI extends javax.swing.JFrame {
         DefaultListModel modelo_lista = new DefaultListModel();
         for (int i = 0; i < clients.length; i++) {
             modelo_lista.add(i, clients[i]);
+            if (dms.size() <= i ) {
+                dms.add(new directMessage(i + 1, cliente));
+            }
         }
         this.userList.setModel(modelo_lista);
     }
@@ -199,10 +183,10 @@ public class ClienteGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JList<String> userList;
     // End of variables declaration//GEN-END:variables
     private Cliente cliente = new Cliente(this);
+    private ArrayList<directMessage> dms;
 }

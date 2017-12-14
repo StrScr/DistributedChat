@@ -19,7 +19,6 @@ public class Cliente {
     private Mensaje mensaje = null; 
     private ClienteGUI cGUI = null;
     private int myid;
-    private int toid;
     
     Cliente() {}
     Cliente(ClienteGUI cGUI) {
@@ -40,9 +39,9 @@ public class Cliente {
             System.out.println("");
         }
     }
-    public void enviarMensaje(String mensaje) {
+    public void enviarMensaje(String mensaje, int toid) {
         try {
-            this.mensaje.publicar(myid,toid,mensaje);
+            this.mensaje.publicar(myid, toid ,mensaje);
         } catch (RemoteException ex) {
             System.out.println("");
         }
@@ -68,8 +67,5 @@ public class Cliente {
         cliente.prueba();
     }
     
-    public void selectto(int id){
-        toid = id;
-    }
 }   
 

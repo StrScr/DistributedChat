@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public interface Mensaje extends Remote {    
     void publicar(int idfrom, int idto, String mensaje) throws RemoteException;
-    void publicarACliente(String mensaje) throws RemoteException;
+    void publicarACliente(String mensaje, int idfrom) throws RemoteException;
     int registrar(Mensaje mensajeObj) throws RemoteException;
     void setClients(Map<Integer, Mensaje> n) throws RemoteException;
     String getUsername() throws RemoteException;
