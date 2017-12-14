@@ -6,12 +6,7 @@ package distribucionchat;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
 import javax.swing.DefaultListModel;
-import javax.swing.JSpinner;
-import javax.swing.ListModel;
-import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -21,10 +16,12 @@ public class ClienteGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form ClienteGUI
+     * @param username Username that user is registered as.
      */
     public ClienteGUI(String username) {
         dms = new ArrayList();
-        initComponents();      
+        initComponents();
+        this.setTitle("Distributed Chat - " + username);
         cliente.iniciar(username);  
     }
 
@@ -46,6 +43,7 @@ public class ClienteGUI extends javax.swing.JFrame {
         chat = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
@@ -79,10 +77,10 @@ public class ClienteGUI extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
                     .addComponent(chat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)))
                 .addContainerGap())
@@ -110,15 +108,16 @@ public class ClienteGUI extends javax.swing.JFrame {
             cliente.enviarMensaje(this.jTextField1.getText(), 0);
             this.jTextField1.setText("");
         }
-            
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void chatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chatActionPerformed
         int index = userList.getSelectedIndex();
-        directMessage newChat = dms.get(index);
-        newChat.pack();
-        newChat.setVisible(true);
-        // TODO add your handling code here:
+        if(index>=0){
+            directMessage newChat = dms.get(index);
+            newChat.pack();
+            newChat.setTitle("Chat with " + userList.getSelectedValue());
+            newChat.setVisible(true);
+        }
     }//GEN-LAST:event_chatActionPerformed
 
     /**
@@ -157,17 +156,14 @@ public class ClienteGUI extends javax.swing.JFrame {
     }
     
     public void actualizarTexto(String mensaje, int index) {
-        //this.jTextArea1.setText(jTextArea1.getText()+"\n" + mensaje);
         if (index == 0) {
-            this.jTextArea1.append("\n" + mensaje);
+            this.jTextArea1.append(mensaje + "\n");
         }else {
             dms.get(index - 1).actualizarTexto(mensaje);
         }
     }
     
     public void updateClients(String[] clients) throws RemoteException{
-        //this.jSpinner1 = new JSpinner(new SpinnerNumberModel(0, 0, numclients, 1));
-//        this.jSpinner1.setModel(new SpinnerNumberModel(0, 0, numclients, 1));
         DefaultListModel modelo_lista = new DefaultListModel();
         for (int i = 0; i < clients.length; i++) {
             modelo_lista.add(i, clients[i]);

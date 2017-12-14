@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package distribucionchat;
 
 /**
@@ -12,6 +7,7 @@ package distribucionchat;
 public class directMessage extends javax.swing.JFrame {
     private Cliente cliente;
     private int index;
+    
     /**
      * Creates new form directMessage
      */
@@ -35,6 +31,9 @@ public class directMessage extends javax.swing.JFrame {
         inputMessage = new javax.swing.JTextField();
         sendMessage = new javax.swing.JButton();
 
+        setResizable(false);
+
+        messageBox.setEditable(false);
         messageBox.setColumns(20);
         messageBox.setRows(5);
         jScrollPane1.setViewportView(messageBox);
@@ -51,23 +50,21 @@ public class directMessage extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(inputMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sendMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(sendMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(inputMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(sendMessage))
@@ -82,7 +79,6 @@ public class directMessage extends javax.swing.JFrame {
             cliente.enviarMensaje(this.inputMessage.getText(), this.index);
             this.inputMessage.setText("");
         }
-        // TODO add your handling code here:
     }//GEN-LAST:event_sendMessageActionPerformed
 
     /**
@@ -121,8 +117,7 @@ public class directMessage extends javax.swing.JFrame {
     }
     
     public void actualizarTexto(String mensaje) {
-        //this.jTextArea1.setText(jTextArea1.getText()+"\n" + mensaje);
-        messageBox.append("\n" + mensaje);
+        messageBox.append(mensaje + "\n");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

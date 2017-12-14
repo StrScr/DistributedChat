@@ -1,16 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package distribucionchat;
 
-/**
- *
- * @author Juan Leonardo
- */
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -23,16 +14,17 @@ public class MensajeImpl extends UnicastRemoteObject implements Mensaje {
     private ClienteGUI cGUI = null;
     private int lastid;
 
+    @Override
     public String getUsername() {
         return username;
     }
-    
     
     public MensajeImpl(String username) throws RemoteException {
         this.username = username;
         clienteObj = new HashMap<>();
         lastid = 0;
     }
+    
     public MensajeImpl(String username, ClienteGUI cGUI) throws RemoteException {
         this.username = username;
         clienteObj = new HashMap<>();
@@ -50,11 +42,13 @@ public class MensajeImpl extends UnicastRemoteObject implements Mensaje {
             while (cliOI.hasNext()) {
                 nxt = ((Mensaje)cliOI.next());
                 if(nxt!=me){
-                    nxt.publicarACliente(idfrom + " " + me.getUsername() + " to Everyone: " + mensaje, 0);
+                    nxt.publicarACliente(me.getUsername() + " to Everyone: " + mensaje, 0);
                 }
             }
+        }else if(idto==idfrom){
+            //Do nothing
         }else{
-            clienteObj.get(idto).publicarACliente(idfrom + " " + me.getUsername() + " to You: " + mensaje, idfrom);
+            clienteObj.get(idto).publicarACliente(me.getUsername() + " to You: " + mensaje, idfrom);
         }
         me.publicarACliente("You to " + ((idto==0)?"Everyone":clienteObj.get(idto).getUsername()) + ": " + mensaje, idto);
     }
@@ -69,8 +63,11 @@ public class MensajeImpl extends UnicastRemoteObject implements Mensaje {
         lastid++;
         clienteObj.put(lastid, mensajeObj);
         Iterator cliOI = clienteObj.values().iterator();
+        Mensaje nxt;
         while (cliOI.hasNext()) {
-            ((Mensaje)cliOI.next()).setClients(clienteObj);
+            nxt = ((Mensaje)cliOI.next());
+            nxt.setClients(clienteObj);
+            nxt.publicarACliente(mensajeObj.getUsername() + " has joined chat.", 0);
         }
         return lastid;
     }
