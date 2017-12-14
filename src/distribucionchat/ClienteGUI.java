@@ -4,6 +4,8 @@
  */
 package distribucionchat;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import javax.swing.DefaultListModel;
@@ -162,13 +164,18 @@ public class ClienteGUI extends javax.swing.JFrame {
         this.jTextArea1.append("\n" + mensaje);
     }
     
-    public void updateClients(Map<Integer, Mensaje> clients){
+    public void updateClients(Map<Integer, Mensaje> clients) throws RemoteException{
         //this.jSpinner1 = new JSpinner(new SpinnerNumberModel(0, 0, numclients, 1));
 //        this.jSpinner1.setModel(new SpinnerNumberModel(0, 0, numclients, 1));
         DefaultListModel modelo_lista = new DefaultListModel();
         Iterator cliOI = clients.values().iterator();
+        ArrayList usernames;
+        usernames = new ArrayList<String>();
         while (cliOI.hasNext()) {
-            modelo_lista.addElement(((Mensaje)cliOI.next()));
+            usernames.add(((Mensaje)cliOI.next()));
+        }
+        for (int i = 0; i < usernames.size(); i++) {
+            System.out.println(usernames.get(i));
         }
         this.userList.setModel(modelo_lista);
     }

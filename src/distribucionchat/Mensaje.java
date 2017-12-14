@@ -18,6 +18,4 @@ public interface Mensaje extends Remote {
     int registrar(Mensaje mensajeObj) throws RemoteException;
     void setClients(Map<Integer, Mensaje> n) throws RemoteException;
     String getUsername() throws RemoteException;
-    @Override
-    String toString();
 }
