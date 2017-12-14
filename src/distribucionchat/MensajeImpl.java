@@ -70,13 +70,13 @@ public class MensajeImpl extends UnicastRemoteObject implements Mensaje {
         clienteObj.put(lastid, mensajeObj);
         Iterator cliOI = clienteObj.values().iterator();
         while (cliOI.hasNext()) {
-            ((Mensaje)cliOI.next()).setClients(lastid);
+            ((Mensaje)cliOI.next()).setClients(clienteObj);
         }
         return lastid;
     }
     
     @Override
-    public void setClients(int n) throws RemoteException{
+    public void setClients(Map<Integer, Mensaje> n) throws RemoteException{
         cGUI.updateClients(n);
     }
 }
