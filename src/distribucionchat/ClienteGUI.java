@@ -4,8 +4,11 @@
  */
 package distribucionchat;
 
+import java.util.Iterator;
 import java.util.Map;
+import javax.swing.DefaultListModel;
 import javax.swing.JSpinner;
+import javax.swing.ListModel;
 import javax.swing.SpinnerNumberModel;
 
 /**
@@ -162,10 +165,12 @@ public class ClienteGUI extends javax.swing.JFrame {
     public void updateClients(Map<Integer, Mensaje> clients){
         //this.jSpinner1 = new JSpinner(new SpinnerNumberModel(0, 0, numclients, 1));
 //        this.jSpinner1.setModel(new SpinnerNumberModel(0, 0, numclients, 1));
-        for (int i = 0; i < 10; i++) {
-           
+        DefaultListModel modelo_lista = new DefaultListModel();
+        Iterator cliOI = clients.values().iterator();
+        while (cliOI.hasNext()) {
+            modelo_lista.addElement(((Mensaje)cliOI.next()));
         }
-        this.userList.setModel(model);
+        this.userList.setModel(modelo_lista);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
